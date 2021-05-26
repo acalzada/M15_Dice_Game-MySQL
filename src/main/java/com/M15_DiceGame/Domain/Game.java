@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.M15_DiceGame.Domain.User;
 
 @Entity
 @Table(name="Game")
@@ -54,7 +53,6 @@ public class Game {
 		
 		// Game Winning Rule
 		this.game_won = (this.dice1_Value + this.dice2_Value) == this.winningGameValue;
-		
 	}
 
 	// GETTERS & SETTERS
@@ -130,4 +128,7 @@ public class Game {
 		this.winningGameValue = winningGameValue;
 	}
 		
+	public String toString() {
+		return "Game ['D1= " + this.dice1_Value + ", D2= " + this.dice2_Value + ", Result= " + this.game_won + "']";
+	}
 }

@@ -12,14 +12,25 @@ public class UserDTO extends User {
 	
 	public UserDTO(User user) {
 		this.setId(user.getId());
-		this.setName(user.getName());
+		if (user.getName() == null) {
+			this.setName("ANONIM");
+		}else {
+			this.setName(user.getName());
+		}
 		this.setMeanScore(user.getMeanScore());
 		this.setRegistration_date(user.getRegistration_date());
+		this.games = user.getGames();
 	}
 	
 	public UserDTO(Long id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+	
+	public UserDTO(Long id, String name, float meanScore) {
+		this.id = id;
+		this.name = name;
+		this.meanScore = meanScore;
 	}
 	
 	public Game play() {
@@ -32,7 +43,7 @@ public class UserDTO extends User {
 		int dice2 = (int) Math.floor(Math.random()*(max-min+1)+min);
 		
 		Game game = new Game(this.getId(), dice1, dice2);
-		
+
 		// Add new game to the user profile
 		this.games.add(game);
 		

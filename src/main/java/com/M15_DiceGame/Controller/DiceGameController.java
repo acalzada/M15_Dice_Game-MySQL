@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.M15_DiceGame.Service.DiceGameServiceImpl;
-import com.M15_DiceGame.DAO.GameDAO;
 import com.M15_DiceGame.DTO.*;
 import com.M15_DiceGame.Domain.Game;
 
@@ -32,7 +30,7 @@ public class DiceGameController {
 	}	
 	
 	
-	@PutMapping("/players")
+	@PutMapping({"/players","/players/"})
 	public UserDTO changeUserName(@RequestBody UserDTO userHttp) {
 		UserDTO user = diceGameServiceImpl.findById(userHttp.getId());
 		user.setName(userHttp.getName());
@@ -41,7 +39,7 @@ public class DiceGameController {
 	
 	
 
-	@PostMapping("/players/{id}/games/")
+	@PostMapping({"/players/{id}/games","/players/{id}/games/"})
 	public Game throwDices(@PathVariable(name="id") Long id) {
 		UserDTO user = diceGameServiceImpl.findById(id);
 		Game game = user.play();
@@ -54,55 +52,49 @@ public class DiceGameController {
 		
 	}
 	
-	/*	
-	@DeleteMapping("/players/{id}/games")
+		
+	@DeleteMapping({"/players/{id}/games","/players/{id}/games/"})
 	public UserDTO deleteAllUserGames(@PathVariable(name="id") Long id) {
-		UserDTO user = userServiceImpl.findById(id);
+		UserDTO user = diceGameServiceImpl.findById(id);
 		user.deleteAllGames();
-		userServiceImpl.updateUser(user);
+		diceGameServiceImpl.updateUser(user);
 		return user;
 	}
 	
 	
-	*/
 	@GetMapping({"/players/","/players"})
 	public List<UserDTO> getAllUsersWithGameStatistics() {
 		return diceGameServiceImpl.getAllUsers();
 	}
 	
-	/*
-	@GetMapping("/players/{id}/games")
-	public List<GameDTO> getUserGames(@PathVariable(name="id") Long id) {
-		UserDTO user = userServiceImpl.findById(id);
+
+	@GetMapping({"/players/{id}/games","/players/{id}/games/"})
+	public List<Game> getUserGames(@PathVariable(name="id") Long id) {
+		UserDTO user = diceGameServiceImpl.findById(id);
 		return user.getGames();
 	}
-	
 
 	
-	@GetMapping("/players/ranking")
+	
+	@GetMapping({"/players/ranking","/players/ranking/"})
 	public float getAverageGameWinningStatistic() {
-		return userServiceImpl.getAverageWinningScore();
+		return diceGameServiceImpl.getAverageWinningScore();
 	}
 	
-
 	
-	@GetMapping("/players/ranking/loser")
+	@GetMapping({"/players/ranking/loser","/players/ranking/loser/"})
 	public List<UserDTO> getUserWithLowestScore() {
-		return userServiceImpl.getLastRanking();
+		return diceGameServiceImpl.getLastRanking();
 	}	
 	
-	@GetMapping("/players")
-	public List<UserDTO> getPlayers() {
-		return userServiceImpl.getPlayers();
-	}
 	
 	
 	
 	@GetMapping("/players/ranking/winner")
 	public List<UserDTO> getUserWithHighestScore() {
-		return userServiceImpl.getFirstRanking();
+		return diceGameServiceImpl.getFirstRanking();
 	}
 	
-	*/
+	
 }
 

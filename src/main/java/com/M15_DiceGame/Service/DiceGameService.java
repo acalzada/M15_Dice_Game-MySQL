@@ -18,12 +18,10 @@ public interface DiceGameService {
 	
 	public List<UserDTO> getAllUsers();
 	
-	/*
 	public float getAverageWinningScore();
-	
 	
 	public List<UserDTO> getLastRanking();
 	
 	public List<UserDTO> getFirstRanking();
-	*/
+	
 }

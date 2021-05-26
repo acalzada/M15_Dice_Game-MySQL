@@ -11,7 +11,8 @@ import com.M15_DiceGame.Domain.User;
 @Repository
 public interface UserDAO extends JpaRepository<User, Long>{
 
-	@Query(value = "SELECT new User(id, name, meanScore) FROM User")
+	//@Query(value = "SELECT new User(id, name, meanScore) FROM User")
+	@Query(value = "SELECT user_id, name, meanScore FROM User", nativeQuery = true)
 	public List<User> getAllUsersIdAndNameAndMeanScore();
 	
 	@Query(value = "SELECT avg(meanScore) FROM User")

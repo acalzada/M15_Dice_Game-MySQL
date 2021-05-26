@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.M15_DiceGame.DAO.GameDAO;
 import com.M15_DiceGame.DAO.UserDAO;
 import com.M15_DiceGame.DTO.UserDTO;
-import com.M15_DiceGame.DTO.GameDTO;
 import com.M15_DiceGame.Domain.Game;
 import com.M15_DiceGame.Domain.User;
 
@@ -35,6 +34,8 @@ public class DiceGameServiceImpl implements DiceGameService{
 	public UserDTO updateUser(UserDTO userDTO) {
 		User user = userDAO.findById(userDTO.getId()).get();
 		user.setName(userDTO.getName());
+		user.setMeanScore(userDTO.getMeanScore());
+		user.setGames(userDTO.getGames());
 		user = userDAO.save(user);
 		return new UserDTO(user);
 	}
@@ -55,73 +56,30 @@ public class DiceGameServiceImpl implements DiceGameService{
 	@Override
 	public List<UserDTO> getAllUsers() {
 		List<User> users = userDAO.getAllUsersIdAndNameAndMeanScore();
-		List<UserDTO> usersDTO = new ArrayList();
-		users.forEach((user) -> usersDTO.add(new UserDTO(user)));
+		List<UserDTO> usersDTO = new ArrayList<UserDTO>();
+		users.forEach((user) -> usersDTO.add(new UserDTO(user.getId(), user.getName(), user.getMeanScore())));
 		
 		return usersDTO;
 	}
-
-	/*
-	@Override
-	public float getAverageWinningScore() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
+	
 	public List<UserDTO> getLastRanking() {
-		// TODO Auto-generated method stub
-		return null;
+		float min_mean_score = userDAO.getMinMeanScore();
+		List<UserDTO> usersDTO = new ArrayList<UserDTO>();
+		userDAO.findByMeanScore(min_mean_score).forEach((user)-> usersDTO.add(new UserDTO(user)));
+		return usersDTO;
 	}
-
+	
 	@Override
 	public List<UserDTO> getFirstRanking() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public com.M15_DiceGame.Service.UserDTO addNewUser(com.M15_DiceGame.Service.UserDTO user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public com.M15_DiceGame.Service.UserDTO updateUser(com.M15_DiceGame.Service.UserDTO user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public GameDTO saveNewGame(GameDTO game) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public com.M15_DiceGame.Service.UserDTO findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<com.M15_DiceGame.Service.UserDTO> getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<com.M15_DiceGame.Service.UserDTO> getLastRanking() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<com.M15_DiceGame.Service.UserDTO> getFirstRanking() {
-		// TODO Auto-generated method stub
-		return null;
+		float max_mean_score = userDAO.getMaxMeanScore();
+		List<UserDTO> usersDTO = new ArrayList<UserDTO>();
+		userDAO.findByMeanScore(max_mean_score).forEach((user)->usersDTO.add(new UserDTO(user)));
+		return usersDTO;
 	}
 	 
-	 */
+	 
+	public float getAverageWinningScore() {
+		return userDAO.getAverageMeanScore();
+	}
 	
 }

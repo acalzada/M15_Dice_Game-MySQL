@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import com.M15_DiceGame.DTO.UserDTO;
-import com.M15_DiceGame.Domain.Game;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
@@ -101,7 +99,9 @@ public class User {
 	}
 
 
-	
+	public void setGames(List<Game> games) {
+		this.games = games;
+	}
 
 
 	/**
